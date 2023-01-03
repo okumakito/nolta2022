@@ -43,5 +43,5 @@ def plot_mae2(res_mae_f, res_mae_u, mode='skew'):
   fig.savefig('tmp.pdf')
 
 if __name__ == '__main__':
-  #plot_mae2(res_mae_f_skew, res_mae_u_skew, mode='skew')
-  plot_mae2(res_mae_f_skip, res_mae_u_skip, mode='skip')
+  mode = sys.argv[1] # 'skew' or 'skip'
+  plot_mae2(res_mae_f, res_mae_u, mode)

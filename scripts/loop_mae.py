@@ -1,15 +1,23 @@
-def loop_mae():
-  n_repeat = 1000
+def loop_mae(mode='skew', method='lsm'):
+  n_repeat = 100
   n_list = [10**3, 10**4, 10**5]
-  #skip_list = [1]
-  #skew_list = [-0.5, -0.4, -0.3, -0.2, -0.1, 0]
-  skip_list = [1, 10, 100, 1000, 10000] # for mle
-  #skip_list = [1, 2, 3, 5, 10] # for polyfit
-  skew_list = [-0.5]
+
+  sweep_skew = True if mode=='skew'  else False
+  use_lsm    = True if method=='lsm' else False
+  if sweep_skew:
+    skew_list = [-0.5, -0.4, -0.3, -0.2, -0.1, 0]
+    skip_list = [1]
+  else:
+    skew_list = [-0.5]
+    if use_lsm:
+      skip_list = [1, 2, 3, 5, 10]
+    else:
+      skip_list = [1, 10, 100, 1000, 10000]
+
   param_arr = np.array(np.meshgrid(n_list, skew_list, skip_list))\
                 .T.reshape(-1,3)
   use_sde = True # True: sde, False, iid
-  use_mle = True # True: mle, False, polyfit
+
 
   result_list = []
   for n, skew_th, n_skip in param_arr:
@@ -30,7 +38,7 @@ def loop_mae():
         # calc f_pred
         f_pred = np.poly1d(np.polyfit(x_arr, dx_arr, deg=2))
         sigma_pred = calc_sigma_pred(x_arr, dx_arr, f_pred)
-        if use_mle: # True: mle, False: polyfit
+        if not use_lsm:
           g_pred = mle(x_arr)
           f_pred = -np.polyder(g_pred) * sigma_pred**2 / 2
 
@@ -62,6 +70,8 @@ def loop_mae():
   return df
 
 if __name__ == '__main__':
+  mode = sys.argv[1] # 'skew' or 'skip'
+  method = sys.argv[2] # 'lsm' or 'mle'
   t0 = time.time()
-  result_df = loop_mae()
+  result_df = loop_mae(mode, method)
   print(f'time = {time.time() - t0:g} s')
