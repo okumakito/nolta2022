@@ -10,7 +10,8 @@ from numba import jit
 sns.set_context('talk', font_scale=0.8)
 
 import warnings
-warnings.filterwarnings('ignore', 'The iteration is not making good progress')
+#warnings.filterwarnings('ignore', 'The iteration is not making good progress')
+warnings.filterwarnings('ignore')
 
 # for embedding fonts into pdf figures
 import matplotlib
