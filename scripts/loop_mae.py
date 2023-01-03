@@ -1,5 +1,5 @@
 def loop_mae(mode='skew', method='lsm'):
-  n_repeat = 100
+  n_repeat = 1000
   n_list = [10**3, 10**4, 10**5]
 
   sweep_skew = True if mode=='skew'  else False
