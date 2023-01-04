@@ -206,5 +206,3 @@ def calc_sigma_pred2(x_arr, dx_arr, g_pred):
 
 if __name__ == '__main__':
   update_equiv()
-  plt.plot()
-  plt.close()
